@@ -1,3 +1,3 @@
-//require('./dynamo');
-require('./ec2');
-//require('./ecr');
+//require('./promise');
+//require('./chainPromise');
+require('./nestedPromise');
