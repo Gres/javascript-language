@@ -1,5 +1,11 @@
 //require('./promise');
 //require('./chainPromise');
-require('./chainPromisev2');
+//require('./chainPromisev2');
 //require('./nestedPromise');
 //require('./mongodbCachev2');
+//require('./promise/promiseExceptions');
+//require('./aws/swf');
+//require('./mongodb/mongoose_outage');
+//require('./nodejs/awaitAsync');
+//require('./nodejs/iteratorGenerator.js')
+require('./promise/chainPromisev3.js');
