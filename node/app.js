@@ -8,4 +8,5 @@
 //require('./mongodb/mongoose_outage');
 //require('./nodejs/awaitAsync');
 //require('./nodejs/iteratorGenerator.js')
-require('./promise/chainPromisev3.js');
+//require('./promise/chainPromisev3.js');
+require('./ves/index.js');
