@@ -99,7 +99,12 @@ const rootQuery = new GraphQLObjectType({
         fields: {
             getBook: {
                 type: Book,
-                resolve: () => {
+                args: {
+                    title: { type: GraphQLString },
+                    pages: { type: GraphQLInt },
+                    author: { type: GraphQLString }
+                },
+                resolve: (__, { title, pages, author }) => {
                     const books = database.books;
                     return books[Math.floor(Math.random() * books.length)];
                 }
@@ -109,18 +114,32 @@ const rootQuery = new GraphQLObjectType({
                 resolve: () => {
                     return database.books;
                 }
-            },
-            getBookIds: {
-                type: new GraphQLList(GraphQLString), 
-                resolve: () => {
-                    return ['xxx', 'xxxx'];
+            }
+        }        
+    });
+    
+    const rootMutation = new GraphQLObjectType({
+        name: 'Mutation',
+        fields: {
+            addBook: {
+                type: new GraphQLList(Book),
+                args: {
+                    title: { type: GraphQLString },
+                    pages: { type: GraphQLInt },
+                    author: { type: GraphQLString }
+                },
+                resolve: (__, { title, pages, author }) => {
+                    const books = database.books;
+                    books.push({ title, pages, author });
+                    return books;
                 }
             }
         }        
     });
 
 const schema = new GraphQLSchema({
-    query: rootQuery 
+    query: rootQuery,
+    mutation: rootMutation 
 });
 
 const app = express();

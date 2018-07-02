@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.1",
     "aws-sdk": "2.158.0",
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
+    "moment": "^2.22.2",
     "mongoose": "5.1.1",
     "q": "1.5.1",
     "superagent": "^3.8.3"
