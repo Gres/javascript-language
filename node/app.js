@@ -1,14 +1,22 @@
 //require('./mongodbCachev2');
 //require('./promise/promiseExceptions');
-//require('./aws/swf');
 //require('./mongodb/mongoose_outage');
 //require('./nodejs/awaitAsync');
 //require('./nodejs/iteratorGenerator.js')
 //require('./ves/index.js');
+
+
+/** 
+ * aws 
+*/
+//require('./aws/stepFunctions');
+
 /** 
  * node 
 */
-require('./nodejs/asynclib');
+//require('./nodejs/asynclib');
+require('./nodejs/requireAndSingleton');
+
 
 /** 
  * promise
