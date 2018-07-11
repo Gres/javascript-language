@@ -21,10 +21,18 @@ const obj = require('./requireTest/requireDummyObject2');
 console.log('access dummy obj.bar');
 const x = obj.bar; */
 
+/* 
 console.log('require one');
 require('./requireTest/requireDummyFunction');
 console.log('require two');
 require('./requireTest/requireDummyFunction');
+console.log('require three');
+ */
+
+console.log('require one');
+require('./requireTest/requireDummyIIFEFunction');
+console.log('require two');
+require('./requireTest/requireDummyIIFEFunction');
 console.log('require three');
 
 console.log('after all requires');
