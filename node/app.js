@@ -10,12 +10,14 @@
  * aws 
 */
 //require('./aws/stepFunctions');
+//require('./aws/dynamodb');
+require('./aws/sqs');
 
 /** 
  * node 
 */
 //require('./nodejs/asynclib');
-require('./nodejs/requireAndSingleton');
+//require('./nodejs/requireAndSingleton');
 
 
 /** 
