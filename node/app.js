@@ -11,13 +11,15 @@
 */
 //require('./aws/stepFunctions');
 //require('./aws/dynamodb');
-require('./aws/sqs');
+//require('./aws/sqs');
 
 /** 
  * node 
 */
 //require('./nodejs/asynclib');
 //require('./nodejs/requireAndSingleton');
+//require('./nodejs/memory');
+require('./nodejs/memoryLeak');
 
 
 /** 
