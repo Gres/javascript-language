@@ -1,4 +1,4 @@
-const Q = require('q');
+cconst Q = require('q');
 const promiseArr = [];
 const EventEmitter = require('events');
 const _ = require('lodash');

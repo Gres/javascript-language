@@ -17,7 +17,8 @@
     "moment": "^2.22.2",
     "mongoose": "5.1.1",
     "q": "1.5.1",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "eslint": "3.19.0",
