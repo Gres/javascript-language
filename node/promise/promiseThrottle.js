@@ -1,34 +1,3 @@
-/**
- * 
- * @param {*} array
- *      
- * @param {*} promiseFun 
- * @param {*} throttle 
- */
-
-/*
-function forEachPromise(array, promiseFun, throttle) {
-    if (!Array.isArray(array)) {
-        return Promise.reject('Invalid Parameter');
-    }
-    let index = 0;
-    function startPromise() {
-        return new Promise((resolve, reject) => {
-            if (index >= array.length) {
-                return resolve();
-            }
-            const param = array[index++];
-            return promiseFun(param)
-                .then(() => startPromise())
-                // notice: we must resolve here
-                .then(() => resolve())
-                .catch(err => reject(err));
-        });
-    }
-    return Promise.all([...Array(Math.min(array.length, throttle))].map(() => startPromise()));
-}
-*/
-
 const PromiseThrottle = { };
 
 function HasNextGeneratorAdapter(generator) {
@@ -132,9 +101,17 @@ PromiseThrottle.forEach = PromiseThrottle.all;
 
 module.exports = PromiseThrottle;
 
-let params = [10000, 20000, 30000, 15000, 25000, 35000];
+
+/**
+ * Examples 
+ */
+
+let params;
+
+ /**
+params = [10000, 20000, 30000, 15000, 25000, 35000];
 const paramsCopy = params;
-//params = [1, 2, 3, 4, 5, 6, 7];
+  */
 
 // generator function
 /*
@@ -145,7 +122,6 @@ params = function* () {
 */
 
 // generator object
-
 /*
 params = function* () {
     for (let i = 0; i < paramsCopy.length; i++)
@@ -153,6 +129,7 @@ params = function* () {
 }();
 */
 
+// large size generator
 const limit = 1000000000000000000000000000000000000000000000;
 let i = 1000;
 params = function*() {
@@ -161,6 +138,7 @@ params = function*() {
 };
 
 const throttleSize = 2;
+
 PromiseThrottle.forEach(params, param => new Promise((resolve, reject) => {
     console.log(`${param} loaded`);
     setTimeout(res => {
@@ -173,7 +151,10 @@ PromiseThrottle.forEach(params, param => new Promise((resolve, reject) => {
         console.log(Date());
         console.log('All promise finished');
     });
+
 /* 
+
+// Real World Use Cases
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');

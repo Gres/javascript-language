@@ -30,7 +30,7 @@ function functionExpectToReturnPromise(params) { //eslint-disable-line
         // throw new Error('Invalid Parameter');
         return Promise.reject();
     }
-    // read reasults, configs
+    // read results, configs
 
     // prepare parameter
 
