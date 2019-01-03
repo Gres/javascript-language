@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const keys = require('../keys.json');
+const keys = require('../../keys.json');
 
 AWS.config.update({
     accessKeyId: keys.AWS.dev.AccessKeyId,
@@ -40,7 +40,6 @@ const table = 'Movies';
 const year = 2002;
 const title = 'Fifth Element';
 
-/* 
 const params = {
     TableName: table,
     Key: {
@@ -56,8 +55,9 @@ docClient.get(params)
     })
     .catch((err) => {
         console.error('Unable to read item. Error JSON:', JSON.stringify(err, null, 2));
-    }); */
+    }); 
 
+    /*
 const params = {
     TableName: table,
     Key: {
@@ -74,3 +74,4 @@ docClient.delete(params)
     .catch((err) => {
         console.error('Unable to delete item. Error JSON:', JSON.stringify(err, null, 2));
     }); 
+    */
