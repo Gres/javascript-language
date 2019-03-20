@@ -10,34 +10,34 @@ AWS.config.update({
 const dynamodb = new AWS.DynamoDB();
 
 const params = {
-    AttributeDefinitions: [
-        {
-            AttributeName: "Artist",
-            AttributeType: "S"
-        },
-        {
-            AttributeName: "SongTitle",
-            AttributeType: "S"
-        }
-    ],
-    KeySchema: [
-        {
-            AttributeName: "Artist",
-            KeyType: "HASH"
-        },
-        {
-            AttributeName: "SongTitle",
-            KeyType: "RANGE"
-        }
-    ],
-    ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5
+    ExpressionAttributeNames: {
+        "#AT": "AlbumTitle",
+        "#Y": "Year"
     },
-    TableName: "Music"
+    ExpressionAttributeValues: {
+        ":t": {
+            S: "Louder Than Ever"
+        },
+        ":y": {
+            N: "2015"
+        }
+    },
+    Key: {
+        "Artist": {
+            S: "Acme Band"
+        },
+        "SongTitle": {
+            S: "Happy Day"
+        }
+    },
+    ReturnValues: "ALL_NEW",
+    TableName: "Music",
+    UpdateExpression: "SET #Y = :y, #AT = :t"
 };
 
-dynamodb.createTable(params)
+const method = 'updateItem';
+
+dynamodb[method](params)
     .promise()
     .then(data => {
         console.log(JSON.stringify(data, null, 3));
@@ -47,4 +47,3 @@ dynamodb.createTable(params)
         console.log(JSON.stringify(err, null, 3));
         console.error(`${method} error`);
     });
-

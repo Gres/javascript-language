@@ -17,9 +17,10 @@ dynamodb.deleteTable(params)
     .promise()    
     .then(data => {
         console.log(JSON.stringify(data, null, 3));
-        console.log('Deleted table');
+        console.log(`${method} done`);
     })
     .catch(err => {
         console.log(JSON.stringify(err, null, 3));
-        console.error('Unable to delete table');
+        console.error(`${method} error`);
     });
+

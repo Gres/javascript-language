@@ -1,14 +1,14 @@
 const moment = require('moment');
 const AWS = require('aws-sdk');
 const keys = require('../../keys.json');
+const _ = require('lodash');
 const swf = new AWS.SWF({
     accessKeyId: keys.AWS.dev.AccessKeyId,
     secretAccessKey: keys.AWS.dev.SecretAccessKey,
     region: keys.AWS.dev.region
 });
 
-const { forEachPromise } = require('../../promise/forEachPromise');
-
+const sequential = require('promise-sequential-throttle');
 const domain = 'service-video-encoder-dev-v3';
 
 const params = {
@@ -23,9 +23,7 @@ function terminatorTask() {
     return swf.listOpenWorkflowExecutions(params)
         .promise()
         .then(res =>
-            res)
-        .then(res =>
-            forEachPromise(res.executionInfos, (data) => {
+            sequential.all(res.executionInfos, (data) => {
                 const paramInner = {
                     domain,
                     workflowId: data.execution.workflowId,
@@ -44,7 +42,10 @@ function terminatorTask() {
                         return terminatorTask();
                     }
                 })
-        );
+        )
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 terminatorTask()

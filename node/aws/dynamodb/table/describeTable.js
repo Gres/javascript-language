@@ -16,10 +16,11 @@ const dynamodb = new AWS.DynamoDB();
 dynamodb.describeTable(params)
     .promise()
     .then(data => {
-        console.log('Describe table');
         console.log(JSON.stringify(data, null, 3));
+        console.log(`${method} done`);
     })
     .catch(err => {
-        console.error('Unable to describe table');
         console.log(JSON.stringify(err, null, 3));
+        console.error(`${method} error`);
     });
+
