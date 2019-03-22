@@ -1,4 +1,5 @@
 keys.json
+*.pem
 node_modules
 .vscode
 .DS_Store
