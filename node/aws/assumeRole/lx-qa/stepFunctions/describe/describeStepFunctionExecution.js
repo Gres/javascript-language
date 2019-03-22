@@ -35,10 +35,11 @@ async function main() {
     };
 
     const executions = await stepFunctions.listExecutions(params).promise();
-    console.log(JSON.stringify(executions, null, 3));
+    //console.log(JSON.stringify(executions, null, 3));
 
     const timeoutActivity = [];
     const startedActivity = [];
+    const succeededActivity = [];
 
     const getExecutionHistory = (input) => {
         const { executionArn } = input;
@@ -52,6 +53,7 @@ async function main() {
                 //console.log(JSON.stringify(history.events, null, 3));
                 _.merge(timeoutActivity, _.filter(history.events, { "type": "ActivityTimedOut" }));
                 _.merge(startedActivity, _.filter(history.events, { "type": "ActivityStarted" }));
+                _.merge(succeededActivity, _.filter(history.events, { "type": "ActivitySucceeded" }));
             });
     };
 
@@ -62,7 +64,10 @@ async function main() {
             console.log('All promise finished in sequence'))
         .then(() => {
             console.log('Timeout Activities');
-            console.log(JSON.stringify(startedActivity, null, 3));
+            //console.log(JSON.stringify(startedActivity, null, 3));
+            console.log(`${startedActivity.length} activity started`);
+            console.log(`${succeededActivity.length} activity succeeded`);
+            console.log(`${timeoutActivity.length} activity timeout`);
             console.log(JSON.stringify(timeoutActivity, null, 3));
         })
         .catch(err => {
