@@ -8,8 +8,6 @@ AWS.config.update({
 });
 AWS.config.credentials = credentials;
 
-const VIDEO = 'short';
-
 async function assumeRole() {
     const sessionData = await sts.assumeRole(
         {
@@ -43,16 +41,6 @@ async function main() {
     const subnets = subnetsParam.Parameter.Value.split(',');
 
     const stateMachineArn = 'arn:aws:states:us-east-1:815809335584:stateMachine:step-task-video-encoder-encodeOneSpeed';
-    const input = JSON.stringify({
-        encodeId: '7004d192791947aba77893ded4185600-enc',
-        encodeStartMS: 192791947,
-        inputFile: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,
-        originatingWorkflowId: 'f76c01f549b94988bb61d4136f0ac86d-wrk',
-        s3URL: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,
-        speed: '08',
-        videoId: '5c75b4fa34efe70301b4fa77',
-        watermark: null
-    });
 
     params = {
         cluster: 'Task-Runner-Tasks',

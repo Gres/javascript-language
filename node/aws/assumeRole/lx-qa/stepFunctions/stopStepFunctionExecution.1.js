@@ -2,14 +2,13 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const sts = new AWS.STS();
+const uuidLib = require('uuid');
+
 const credentials = new AWS.SharedIniFileCredentials({ profile: 'cbtn-lx-qa' });
 AWS.config.update({
     region: 'us-east-1'
 });
 AWS.config.credentials = credentials;
-
-const VIDEO = 'short';
-//const VIDEO = 'long';
 
 async function main() {
     const sessionData = await sts.assumeRole(
@@ -25,28 +24,31 @@ async function main() {
     });
 
     const stateMachineArn = 'arn:aws:states:us-east-1:815809335584:stateMachine:step-task-video-encoder-encodeOneSpeed';
-    const input = JSON.stringify({
-            encodeId: '7004d192791947aba77893ded4185600-enc',
-            encodeStartMS: 192791947,
-            inputFile: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,
-            originatingWorkflowId: 'f76c01f549b94988bb61d4136f0ac86d-wrk',
-            s3URL: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,
-            speed: '08',
-            videoId: '5c75b4fa34efe70301b4fa77',
-            watermark: null
-        });
-
-    const params = {
-        stateMachineArn,
-        input
-    };
 
     const stepFunctions = new AWS.StepFunctions();
 
-    const result = await stepFunctions.startExecution(params).promise();
-    console.log(JSON.stringify(result, null, 3));
+    let params = {
+        stateMachineArn,
+        maxResults: 0,
+        statusFilter: 'RUNNING'
+    };
 
+    const executions = await stepFunctions.listExecutions(params).promise();
+    console.log(JSON.stringify(executions, null, 3));
+
+    for (execution of executions.executions) {
+        console.log(JSON.stringify(execution, null, 3));
+        try {
+            const result = await stepFunctions.stopExecution({ executionArn: execution.executionArn }).promise();
+        } catch (error) {
+            console.log(JSON.stringify(error, null, 3));
+        }
+    }
     console.log();
-
 }
-main();
+
+try {
+    main();
+} catch (error) {
+    console.log(JSON.stringify(error, null, 3));
+}
