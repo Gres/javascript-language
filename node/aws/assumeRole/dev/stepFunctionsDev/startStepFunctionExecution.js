@@ -24,7 +24,7 @@ async function main() {
     const stateMachineArn = 'arn:aws:states:us-west-2:775101116967:stateMachine:step-task-video-encoder-encodeOneSpeed';
     const input = JSON.stringify({
             encodeId: '7004d192791947aba77893ded4185600-enc',
-            encodeStartMS: 192791947,
+            encodeStartMS: new Date().getTime(),
             inputFile: `s3://cbtn-dev-video-source/${VIDEO}.avi`,
             originatingWorkflowId: createId('wrk'),
             s3URL: `s3://cbtn-dev-video-source/${VIDEO}.avi`,

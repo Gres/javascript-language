@@ -1,4 +1,7 @@
 
+const VIDEO = process.argv[2] || 'long';
+console.log(VIDEO);
+
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const sts = new AWS.STS();
@@ -13,11 +16,7 @@ const createId = function (suffix) {
     return `${uuidLib.v4().replace(/-/g, '')}-${suffix}`;
 };
 
-//const VIDEO = 'short';
-//const VIDEO = 'long';
-const VIDEO = 'longest';
-
-const count = 2;
+const count = 20;
 
 const sequential = require('promise-sequential-throttle');
 let i = 0;
@@ -32,7 +31,7 @@ const createStepFunctionExecution = () => {
     const stateMachineArn = 'arn:aws:states:us-east-1:815809335584:stateMachine:step-task-video-encoder-encodeOneSpeed';
     const input = JSON.stringify({
         encodeId: '7004d192791947aba77893ded4185600-enc',
-        encodeStartMS: 192791947,
+        encodeStartMS: new Date().getTime(),
         inputFile: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,
         originatingWorkflowId: createId('wrk'),
         s3URL: `s3://cbtn-lx-qa-us-east-1-video-source/${VIDEO}.avi`,

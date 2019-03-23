@@ -1,4 +1,7 @@
 
+const MAX_CONCURRENT_ACTIVITY = process.argv[2] || '2';
+console.log(MAX_CONCURRENT_ACTIVITY);
+
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const sts = new AWS.STS();
@@ -45,6 +48,7 @@ async function main() {
     params = {
         cluster: 'Task-Runner-Tasks',
         taskDefinition: 'task-video-encoder',
+        count: 10,
         launchType: 'FARGATE',
         networkConfiguration: {
             awsvpcConfiguration: {
@@ -68,10 +72,14 @@ async function main() {
                         {
                             name: 'TASK_OPTIONS',
                             value: '' 
+                        },
+                        {
+                            name: 'MAX_CONCURRENT_ACTIVITY',
+                            value: MAX_CONCURRENT_ACTIVITY 
                         }
-                    ],
-                    cpu: 512,
-                    memory: 1024,
+                    ]
+                    //cpu: 256,
+                    //memory: 2048,
                 }
             ]
             //executionRoleArn: 'STRING_VALUE',

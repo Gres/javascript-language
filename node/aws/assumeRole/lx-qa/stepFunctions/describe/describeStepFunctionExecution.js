@@ -37,37 +37,52 @@ async function main() {
     const executions = await stepFunctions.listExecutions(params).promise();
     //console.log(JSON.stringify(executions, null, 3));
 
-    const timeoutActivity = [];
-    const startedActivity = [];
-    const succeededActivity = [];
+    let timeoutActivity = [];
+    let startedActivity = [];
+    let succeededActivity = [];
+    let stateExitedActivity = [];
+    let scheduledActivity = [];
+
+    const activityMapping = {
+        ActivityTimedOut: [],
+        ActivityStarted: [],
+        ActivitySucceeded: [],
+        TaskStateExited: [],
+        ActivityScheduled: []
+    }; 
 
     const getExecutionHistory = (input) => {
         const { executionArn } = input;
         const params = {
             executionArn,
-            maxResults: 0,
-            reverseOrder: true
+            maxResults: 1000,
+            reverseOrder: false 
         };
         return stepFunctions.getExecutionHistory(params).promise()
             .then(history => {
                 //console.log(JSON.stringify(history.events, null, 3));
-                _.merge(timeoutActivity, _.filter(history.events, { "type": "ActivityTimedOut" }));
-                _.merge(startedActivity, _.filter(history.events, { "type": "ActivityStarted" }));
-                _.merge(succeededActivity, _.filter(history.events, { "type": "ActivitySucceeded" }));
+                _.forEach(history.events, event => {
+                    const type = event.type;
+                    if (activityMapping[type]) {
+                        activityMapping[type].push(event);
+                    }
+                });
             });
     };
 
     const sequential = require('promise-sequential-throttle');
 
-    await sequential.all(executions.executions, getExecutionHistory, 2)
+    await sequential.all(executions.executions, getExecutionHistory, 1)
         .then(() =>
             console.log('All promise finished in sequence'))
         .then(() => {
             console.log('Timeout Activities');
             //console.log(JSON.stringify(startedActivity, null, 3));
-            console.log(`${startedActivity.length} activity started`);
-            console.log(`${succeededActivity.length} activity succeeded`);
-            console.log(`${timeoutActivity.length} activity timeout`);
+            console.log(`${activityMapping.ActivityStarted.length} activity started`);
+            console.log(`${activityMapping.ActivitySucceeded.length} activity succeeded`);
+            console.log(`${activityMapping.TaskStateExited.length} activity exited`);
+            console.log(`${activityMapping.ActivityScheduled.length} activity scheduled`);
+            console.log(`${activityMapping.ActivityTimedOut.length} activity timeout`);
             console.log(JSON.stringify(timeoutActivity, null, 3));
         })
         .catch(err => {
